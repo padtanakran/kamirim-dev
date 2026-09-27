@@ -12,8 +12,7 @@ status: "released"
 free: true
 featured: true
 image: "/images/button-fx-studio.jpg"
-github: "https://github.com/padtanakran"
-download: "https://github.com/padtanakran/kamirim-dev/raw/main/public/downloads/ButtonFXStudio.lua"
+download: "https://www.roblox.com/users/5027612595/profile"
 features:
   en:
     - "Hover FX: Scale Up with bouncy easing, Elevation Lift, Glow Border (UIStroke), Color Brighten, Tilt/Rotate"
@@ -35,15 +34,13 @@ features:
     - "Full Undo/Redo: รองรับ History Service ของ Studio ย้อนกลับการกระทำได้สมบูรณ์แบบ"
 installation:
   en: |
-    1. Download the `ButtonFXStudio.lua` plugin script from the download button.
-    2. Open Roblox Studio and open any place or project.
-    3. Save the plugin file into your local Roblox Plugins folder or run it as a local plugin.
-    4. The **Button FX** tab will appear on your top toolbar ready to use!
+    1. Click the **"Get on Roblox"** link button above to open the plugin page on Roblox Creator Store.
+    2. Click **Install** or **Get Plugin**.
+    3. The plugin will be automatically installed in your Roblox Studio and ready to use in the top toolbar!
   th: |
-    1. ดาวน์โหลดไฟล์ปลั๊กอิน `ButtonFXStudio.lua` จากปุ่มดาวน์โหลดด้านบน
-    2. เปิด Roblox Studio และเปิดโปรเจกต์ของคุณ
-    3. บันทึกไฟล์ปลั๊กอินลงในโฟลเดอร์ Plugins ของ Roblox Studio
-    4. แถบเครื่องมือ **Button FX** จะปรากฏบนเมนู Toolbar ด้านบนพร้อมใช้งานทันที!
+    1. กดปุ่มลิงก์ **"Get on Roblox"** ด้านบนเพื่อไปยังหน้าปลั๊กอินบน Roblox Creator Store
+    2. กดปุ่ม **Install** หรือ **Get Plugin**
+    3. ปลั๊กอินจะถูกติดตั้งลงใน Roblox Studio อัตโนมัติ และพร้อมใช้งานทันทีบนแถบเครื่องมือ Toolbar ด้านบน!
 ---
 
 ## Overview / ภาพรวม
