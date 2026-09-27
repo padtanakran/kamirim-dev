@@ -22,13 +22,16 @@ function isActive(path: string): boolean {
 
     <nav class="desktop-nav" aria-label="Main navigation">
       <a href={u('/projects')} class:list={['nav-link', { active: isActive('/projects') }]}>
-        {t(lang, 'nav.projects')}
+        <span class="lang-en">{t('en', 'nav.projects')}</span>
+        <span class="lang-th">{t('th', 'nav.projects')}</span>
       </a>
       <a href={u('/about')} class:list={['nav-link', { active: isActive('/about') }]}>
-        {t(lang, 'nav.about')}
+        <span class="lang-en">{t('en', 'nav.about')}</span>
+        <span class="lang-th">{t('th', 'nav.about')}</span>
       </a>
       <a href={u('/donate')} class:list={['nav-link', { active: isActive('/donate') }]}>
-        {t(lang, 'nav.donate')}
+        <span class="lang-en">{t('en', 'nav.donate')}</span>
+        <span class="lang-th">{t('th', 'nav.donate')}</span>
       </a>
     </nav>
 
@@ -36,15 +39,15 @@ function isActive(path: string): boolean {
       <!-- Language Switcher -->
       <div class="lang-switcher" id="lang-switcher" aria-label="Language switcher">
         <button
-          class:list={['lang-btn', { 'lang-active': lang === 'th' }]}
+          class="lang-btn"
           data-lang="th"
-          aria-pressed={lang === 'th'}
+          aria-pressed="false"
         >TH</button>
         <span class="lang-sep">/</span>
         <button
-          class:list={['lang-btn', { 'lang-active': lang === 'en' }]}
+          class="lang-btn"
           data-lang="en"
-          aria-pressed={lang === 'en'}
+          aria-pressed="false"
         >EN</button>
       </div>
 
@@ -75,18 +78,21 @@ function isActive(path: string): boolean {
   <!-- Mobile Navigation -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
     <a href={u('/projects')} class:list={['mobile-nav-link', { active: isActive('/projects') }]}>
-      {t(lang, 'nav.projects')}
+      <span class="lang-en">{t('en', 'nav.projects')}</span>
+      <span class="lang-th">{t('th', 'nav.projects')}</span>
     </a>
     <a href={u('/about')} class:list={['mobile-nav-link', { active: isActive('/about') }]}>
-      {t(lang, 'nav.about')}
+      <span class="lang-en">{t('en', 'nav.about')}</span>
+      <span class="lang-th">{t('th', 'nav.about')}</span>
     </a>
     <a href={u('/donate')} class:list={['mobile-nav-link', { active: isActive('/donate') }]}>
-      {t(lang, 'nav.donate')}
+      <span class="lang-en">{t('en', 'nav.donate')}</span>
+      <span class="lang-th">{t('th', 'nav.donate')}</span>
     </a>
     <div class="mobile-lang-row">
-      <button class:list={['lang-btn', { 'lang-active': lang === 'th' }]} data-lang="th">TH</button>
+      <button class="lang-btn" data-lang="th">TH</button>
       <span class="lang-sep">/</span>
-      <button class:list={['lang-btn', { 'lang-active': lang === 'en' }]} data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="en">EN</button>
     </div>
   </nav>
 </header>
@@ -269,32 +275,27 @@ function isActive(path: string): boolean {
     mobileNav?.setAttribute('aria-hidden', String(!isOpen));
   });
 
-  // Language switcher
-  function switchLang(lang: string) {
+  // Reactive Language Switcher
+  function setLanguage(lang: string) {
+    document.documentElement.setAttribute('lang', lang);
     localStorage.setItem('kamirim-lang', lang);
-    // Reload page — Astro will serve correct lang via cookie or redirect
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', lang);
-    // Simple: just store and reload. Server picks it up next request.
-    window.location.href = window.location.pathname + '?lang=' + lang;
+
+    document.querySelectorAll<HTMLButtonElement>('[data-lang]').forEach((btn) => {
+      const isActive = btn.getAttribute('data-lang') === lang;
+      btn.classList.toggle('lang-active', isActive);
+      btn.setAttribute('aria-pressed', String(isActive));
+    });
   }
 
+  // Initialize active button state from current document lang or localStorage
+  const initialLang = localStorage.getItem('kamirim-lang') || document.documentElement.getAttribute('lang') || 'en';
+  setLanguage(initialLang);
+
   document.querySelectorAll<HTMLButtonElement>('[data-lang]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      if (lang) switchLang(lang);
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lang = btn.getAttribute('data-lang');
+      if (lang) setLanguage(lang);
     });
   });
-
-  // On load — if lang param in URL, store in localStorage and clean URL
-  (function () {
-    const params = new URLSearchParams(window.location.search);
-    const langParam = params.get('lang');
-    if (langParam === 'en' || langParam === 'th') {
-      localStorage.setItem('kamirim-lang', langParam);
-      params.delete('lang');
-      const cleanUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-      window.history.replaceState({}, '', cleanUrl);
-    }
-  })();
 </script>

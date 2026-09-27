@@ -1,0 +1,12 @@
+---
+export interface Props {
+  en?: string;
+  th?: string;
+  tag?: 'span' | 'div' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'a';
+  class?: string;
+}
+
+const { en = '', th = '', tag: Tag = 'span', class: className = '' } = Astro.props;
+---
+<Tag class:list={['lang-en', className]} set:html={en} />
+<Tag class:list={['lang-th', className]} set:html={th} />

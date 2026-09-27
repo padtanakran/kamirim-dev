@@ -13,19 +13,39 @@ const items = lang === 'th'
   : ['Free Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'];
 ---
 
-<Base lang={lang} title={tl('about.title')}>
+<Base title="About">
   <section class="section">
     <div class="container about-layout">
       <!-- Main -->
       <div class="about-main">
-        <div class="about-label">{tl('about.title')}</div>
-        <h1 class="about-heading">{tl('about.intro')}</h1>
-        <p class="about-desc">{tl('about.description')}</p>
+        <div class="about-label">
+          <span class="lang-en">{t('en', 'about.title')}</span>
+          <span class="lang-th">{t('th', 'about.title')}</span>
+        </div>
+        <h1 class="about-heading">
+          <span class="lang-en">{t('en', 'about.intro')}</span>
+          <span class="lang-th">{t('th', 'about.intro')}</span>
+        </h1>
+        <p class="about-desc">
+          <span class="lang-en">{t('en', 'about.description')}</span>
+          <span class="lang-th">{t('th', 'about.description')}</span>
+        </p>
 
         <div class="about-section">
-          <h2 class="about-section-title">{tl('about.whatIBuild')}</h2>
-          <ul class="build-list">
-            {items.map((item) => (
+          <h2 class="about-section-title">
+            <span class="lang-en">{t('en', 'about.whatIBuild')}</span>
+            <span class="lang-th">{t('th', 'about.whatIBuild')}</span>
+          </h2>
+          <ul class="build-list lang-en">
+            {['Free Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'].map((item) => (
+              <li class="build-item">
+                <span class="build-dot"></span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <ul class="build-list lang-th">
+            {['ปลั๊กอิน Roblox Studio ฟรี', 'เครื่องมือสำหรับนักพัฒนา', 'แมพ โมเดล และเท็กซ์เจอร์', 'โปรเจกต์โอเพนซอร์ส'].map((item) => (
               <li class="build-item">
                 <span class="build-dot"></span>
                 {item}
@@ -35,10 +55,17 @@ const items = lang === 'th'
         </div>
 
         <div class="about-section">
-          <h2 class="about-section-title">{tl('about.contact')}</h2>
-          <p class="about-contact-text">{tl('about.contactText')}</p>
+          <h2 class="about-section-title">
+            <span class="lang-en">{t('en', 'about.contact')}</span>
+            <span class="lang-th">{t('th', 'about.contact')}</span>
+          </h2>
+          <p class="about-contact-text">
+            <span class="lang-en">{t('en', 'about.contactText')}</span>
+            <span class="lang-th">{t('th', 'about.contactText')}</span>
+          </p>
           <a href={`mailto:${site.email}`} class="btn btn-ghost about-contact-btn">
-            {tl('about.contactButton')} →
+            <span class="lang-en">{t('en', 'about.contactButton')} →</span>
+            <span class="lang-th">{t('th', 'about.contactButton')} →</span>
           </a>
         </div>
       </div>

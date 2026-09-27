@@ -18,20 +18,30 @@ const featuredProjects = allProjects
 const tl = (key: string) => t(lang, key);
 ---
 
-<Base lang={lang} title={undefined}>
+<Base title={undefined}>
   <!-- Hero -->
   <section class="hero section">
     <div class="container hero-inner">
-      <div class="hero-badge">{tl('hero.badge')}</div>
+      <div class="hero-badge">
+        <span class="lang-en">{t('en', 'hero.badge')}</span>
+        <span class="lang-th">{t('th', 'hero.badge')}</span>
+      </div>
       <h1 class="hero-heading">
         KAMIRIM<span class="hero-dot">.</span>
       </h1>
       <p class="hero-sub">
-        {lang === 'th' ? 'ทรัพยากรสำหรับนักพัฒนา Roblox — ฟรีสำหรับทุกคน' : 'Free resources for Roblox developers.'}
+        <span class="lang-en">Free resources for Roblox developers.</span>
+        <span class="lang-th">ทรัพยากรสำหรับนักพัฒนา Roblox — ฟรีสำหรับทุกคน</span>
       </p>
       <div class="hero-actions">
-        <a href={u('/projects')} class="btn btn-primary">{tl('hero.cta')}</a>
-        <a href={u('/about')} class="btn btn-ghost">{tl('hero.ctaSecondary')}</a>
+        <a href={u('/projects')} class="btn btn-primary">
+          <span class="lang-en">{t('en', 'hero.cta')}</span>
+          <span class="lang-th">{t('th', 'hero.cta')}</span>
+        </a>
+        <a href={u('/about')} class="btn btn-ghost">
+          <span class="lang-en">{t('en', 'hero.ctaSecondary')}</span>
+          <span class="lang-th">{t('th', 'hero.ctaSecondary')}</span>
+        </a>
       </div>
     </div>
   </section>
@@ -44,9 +54,13 @@ const tl = (key: string) => t(lang, key);
     <section class="section">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">{tl('projects.featured')}</h2>
+          <h2 class="section-title">
+            <span class="lang-en">{t('en', 'projects.featured')}</span>
+            <span class="lang-th">{t('th', 'projects.featured')}</span>
+          </h2>
           <a href={u('/projects')} class="section-link">
-            {tl('projects.title')} →
+            <span class="lang-en">{t('en', 'projects.title')} →</span>
+            <span class="lang-th">{t('th', 'projects.title')} →</span>
           </a>
         </div>
         <div class="projects-grid">
@@ -61,8 +75,6 @@ const tl = (key: string) => t(lang, key);
               free={project.data.free}
               featured={project.data.featured}
               image={project.data.image}
-              lang={lang}
-              t={tl}
             />
           ))}
         </div>
@@ -74,12 +86,16 @@ const tl = (key: string) => t(lang, key);
   <section class="section categories-section">
     <div class="container">
       <h2 class="section-title" style="margin-bottom: 32px;">
-        {lang === 'th' ? 'หมวดหมู่' : 'Categories'}
+        <span class="lang-en">Categories</span>
+        <span class="lang-th">หมวดหมู่</span>
       </h2>
       <div class="categories-grid">
         {categories.categories.filter(c => c.id !== 'all').map((cat) => (
           <a href={cat.id === 'all' ? u('/projects') : u(`/projects?cat=${cat.id}`)} class="category-card">
-            <span class="cat-name">{cat.name[lang]}</span>
+            <span class="cat-name">
+              <span class="lang-en">{cat.name.en}</span>
+              <span class="lang-th">{cat.name.th}</span>
+            </span>
             <span class="cat-arrow">→</span>
           </a>
         ))}

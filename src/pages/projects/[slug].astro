@@ -31,36 +31,57 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
 ---
 
 <Base
-  lang={lang}
-  title={localized(data.title, lang)}
-  description={localized(data.description, lang)}
+  title={data.title.en}
+  description={data.description.en}
   image={data.image}
 >
   <article class="section">
     <div class="container">
       <!-- Back -->
-      <a href={u('/projects')} class="back-link">{tl('projectDetail.back')}</a>
+      <a href={u('/projects')} class="back-link">
+        <span class="lang-en">{t('en', 'projectDetail.back')}</span>
+        <span class="lang-th">{t('th', 'projectDetail.back')}</span>
+      </a>
 
       <!-- Header -->
       <header class="project-header">
         <div class="project-meta-top">
-          <span class="project-category">{categoryLabel}</span>
-          <span class:list={['badge', `badge-${data.status}`]}>{tl(`status.${data.status}`)}</span>
-          {data.free && <span class="badge badge-free">{tl('projects.free')}</span>}
+          <span class="project-category">
+            <span class="lang-en">{categories.categories.find((c) => c.id === data.category)?.name.en || data.category}</span>
+            <span class="lang-th">{categories.categories.find((c) => c.id === data.category)?.name.th || data.category}</span>
+          </span>
+          <span class:list={['badge', `badge-${data.status}`]}>
+            <span class="lang-en">{t('en', `status.${data.status}`)}</span>
+            <span class="lang-th">{t('th', `status.${data.status}`)}</span>
+          </span>
+          {data.free && (
+            <span class="badge badge-free">
+              <span class="lang-en">{t('en', 'projects.free')}</span>
+              <span class="lang-th">{t('th', 'projects.free')}</span>
+            </span>
+          )}
         </div>
 
-        <h1 class="project-title">{localized(data.title, lang)}</h1>
-        <p class="project-desc">{localized(data.description, lang)}</p>
+        <h1 class="project-title">
+          <span class="lang-en">{data.title.en}</span>
+          <span class="lang-th">{data.title.th}</span>
+        </h1>
+        <p class="project-desc">
+          <span class="lang-en">{data.description.en}</span>
+          <span class="lang-th">{data.description.th}</span>
+        </p>
 
         <div class="project-actions">
           {data.download && (
             <a href={data.download} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-              {tl('projectDetail.download')}
+              <span class="lang-en">{t('en', 'projectDetail.download')}</span>
+              <span class="lang-th">{t('th', 'projectDetail.download')}</span>
             </a>
           )}
           {data.github && (
             <a href={data.github} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
-              {tl('projectDetail.github')}
+              <span class="lang-en">{t('en', 'projectDetail.github')}</span>
+              <span class="lang-th">{t('th', 'projectDetail.github')}</span>
             </a>
           )}
         </div>
@@ -72,16 +93,27 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
           <!-- Preview image -->
           {data.image && (
             <div class="project-image-wrap">
-              <img src={data.image.startsWith('http') ? data.image : u(data.image)} alt={localized(data.title, lang)} class="project-image" />
+              <img src={data.image.startsWith('http') ? data.image : u(data.image)} alt={data.title.en} class="project-image" />
             </div>
           )}
 
           <!-- Features -->
           {data.features && (
             <section class="content-section">
-              <h2 class="content-section-title">{tl('projectDetail.features')}</h2>
-              <ul class="features-list">
-                {localizedArray(data.features, lang).map((feature) => (
+              <h2 class="content-section-title">
+                <span class="lang-en">{t('en', 'projectDetail.features')}</span>
+                <span class="lang-th">{t('th', 'projectDetail.features')}</span>
+              </h2>
+              <ul class="features-list lang-en">
+                {data.features.en.map((feature) => (
+                  <li class="feature-item">
+                    <span class="feature-dot"></span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <ul class="features-list lang-th">
+                {data.features.th.map((feature) => (
                   <li class="feature-item">
                     <span class="feature-dot"></span>
                     {feature}
@@ -94,9 +126,19 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
           <!-- Installation -->
           {data.installation && (
             <section class="content-section">
-              <h2 class="content-section-title">{tl('projectDetail.installation')}</h2>
-              <div class="prose">
-                {localized(data.installation, lang).split('\n').filter((l: string) => l.trim()).map((line: string) => {
+              <h2 class="content-section-title">
+                <span class="lang-en">{t('en', 'projectDetail.installation')}</span>
+                <span class="lang-th">{t('th', 'projectDetail.installation')}</span>
+              </h2>
+              <div class="prose lang-en">
+                {data.installation.en.split('\n').filter((l: string) => l.trim()).map((line: string) => {
+                  const match = line.match(/^(\d+)\.\s+(.+)/);
+                  if (match) return <p>{match[1]}. {match[2].replace(/\*\*(.*?)\*\*/g, '$1')}</p>;
+                  return <p>{line}</p>;
+                })}
+              </div>
+              <div class="prose lang-th">
+                {data.installation.th.split('\n').filter((l: string) => l.trim()).map((line: string) => {
                   const match = line.match(/^(\d+)\.\s+(.+)/);
                   if (match) return <p>{match[1]}. {match[2].replace(/\*\*(.*?)\*\*/g, '$1')}</p>;
                   return <p>{line}</p>;
@@ -118,25 +160,47 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
           <!-- Info -->
           <div class="sidebar-card">
             <div class="sidebar-row">
-              <span class="sidebar-label">{tl('projectDetail.version')}</span>
-              <span class="sidebar-value mono">{tl('projects.version')}{data.version}</span>
+              <span class="sidebar-label">
+                <span class="lang-en">{t('en', 'projectDetail.version')}</span>
+                <span class="lang-th">{t('th', 'projectDetail.version')}</span>
+              </span>
+              <span class="sidebar-value mono">v{data.version}</span>
             </div>
             <div class="sidebar-row">
-              <span class="sidebar-label">{tl('projectDetail.category')}</span>
-              <span class="sidebar-value">{categoryLabel}</span>
+              <span class="sidebar-label">
+                <span class="lang-en">{t('en', 'projectDetail.category')}</span>
+                <span class="lang-th">{t('th', 'projectDetail.category')}</span>
+              </span>
+              <span class="sidebar-value">
+                <span class="lang-en">{categories.categories.find((c) => c.id === data.category)?.name.en || data.category}</span>
+                <span class="lang-th">{categories.categories.find((c) => c.id === data.category)?.name.th || data.category}</span>
+              </span>
             </div>
             <div class="sidebar-row">
-              <span class="sidebar-label">{tl('projectDetail.status')}</span>
-              <span class:list={['badge', `badge-${data.status}`]}>{tl(`status.${data.status}`)}</span>
+              <span class="sidebar-label">
+                <span class="lang-en">{t('en', 'projectDetail.status')}</span>
+                <span class="lang-th">{t('th', 'projectDetail.status')}</span>
+              </span>
+              <span class:list={['badge', `badge-${data.status}`]}>
+                <span class="lang-en">{t('en', `status.${data.status}`)}</span>
+                <span class="lang-th">{t('th', `status.${data.status}`)}</span>
+              </span>
             </div>
           </div>
 
           <!-- Support -->
           <div class="sidebar-card support-card">
-            <p class="support-title">{tl('projectDetail.support')}</p>
-            <p class="support-text">{tl('projectDetail.supportText')}</p>
+            <p class="support-title">
+              <span class="lang-en">{t('en', 'projectDetail.support')}</span>
+              <span class="lang-th">{t('th', 'projectDetail.support')}</span>
+            </p>
+            <p class="support-text">
+              <span class="lang-en">{t('en', 'projectDetail.supportText')}</span>
+              <span class="lang-th">{t('th', 'projectDetail.supportText')}</span>
+            </p>
             <a href={u('/donate')} class="btn btn-ghost" style="width: 100%; justify-content: center; margin-top: 12px;">
-              {lang === 'th' ? 'สนับสนุน →' : 'Support →'}
+              <span class="lang-en">Support →</span>
+              <span class="lang-th">สนับสนุน →</span>
             </a>
           </div>
         </aside>

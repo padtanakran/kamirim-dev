@@ -1,6 +1,5 @@
 ---
-import { localized } from '../i18n/index';
-import type { Lang } from '../i18n/index';
+import { t } from '../i18n/index';
 import { u } from '../utils/url';
 
 export interface Props {
@@ -13,8 +12,6 @@ export interface Props {
   free?: boolean;
   featured?: boolean;
   image?: string;
-  lang?: Lang;
-  t: (key: string) => string;
 }
 
 const {
@@ -27,15 +24,13 @@ const {
   free = true,
   featured = false,
   image,
-  lang = 'en',
-  t,
 } = Astro.props;
 ---
 
-<a href={u(`/projects/${slug}`)} class:list={['project-card', { featured }]} aria-label={localized(title, lang)}>
+<a href={u(`/projects/${slug}`)} class:list={['project-card', { featured }]} aria-label={title.en}>
   <div class="card-image-wrap">
     {image ? (
-      <img src={image.startsWith('http') ? image : u(image)} alt={localized(title, lang)} class="card-image" loading="lazy" decoding="async" />
+      <img src={image.startsWith('http') ? image : u(image)} alt={title.en} class="card-image" loading="lazy" decoding="async" />
     ) : (
       <div class="card-image-placeholder" aria-hidden="true">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -45,21 +40,43 @@ const {
       </div>
     )}
     <div class="card-badges">
-      {featured && <span class="badge badge-featured">{t('projects.featured')}</span>}
-      {free && <span class="badge badge-free">{t('projects.free')}</span>}
+      {featured && (
+        <span class="badge badge-featured">
+          <span class="lang-en">{t('en', 'projects.featured')}</span>
+          <span class="lang-th">{t('th', 'projects.featured')}</span>
+        </span>
+      )}
+      {free && (
+        <span class="badge badge-free">
+          <span class="lang-en">{t('en', 'projects.free')}</span>
+          <span class="lang-th">{t('th', 'projects.free')}</span>
+        </span>
+      )}
     </div>
   </div>
 
   <div class="card-body">
     <div class="card-meta">
       <span class="card-category">{category}</span>
-      <span class:list={['badge', `badge-${status}`]}>{t(`status.${status}`)}</span>
+      <span class:list={['badge', `badge-${status}`]}>
+        <span class="lang-en">{t('en', `status.${status}`)}</span>
+        <span class="lang-th">{t('th', `status.${status}`)}</span>
+      </span>
     </div>
-    <h3 class="card-title">{localized(title, lang)}</h3>
-    <p class="card-desc">{localized(description, lang)}</p>
+    <h3 class="card-title">
+      <span class="lang-en">{title.en}</span>
+      <span class="lang-th">{title.th}</span>
+    </h3>
+    <p class="card-desc">
+      <span class="lang-en">{description.en}</span>
+      <span class="lang-th">{description.th}</span>
+    </p>
     <div class="card-footer">
-      <span class="card-version">{t('projects.version')}{version}</span>
-      <span class="card-cta">{t('projects.viewProject')}</span>
+      <span class="card-version">v{version}</span>
+      <span class="card-cta">
+        <span class="lang-en">{t('en', 'projects.viewProject')}</span>
+        <span class="lang-th">{t('th', 'projects.viewProject')}</span>
+      </span>
     </div>
   </div>
 </a>

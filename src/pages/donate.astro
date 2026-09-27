@@ -9,13 +9,22 @@ const lang: Lang = getLang(langParam);
 const tl = (key: string) => t(lang, key);
 ---
 
-<Base lang={lang} title={tl('donate.title')}>
+<Base title="Donate">
   <section class="section">
     <div class="container donate-layout">
       <div class="donate-main">
-        <div class="donate-label">{tl('donate.title')}</div>
-        <h1 class="donate-heading">{tl('donate.subtitle')}</h1>
-        <p class="donate-desc">{tl('donate.description')}</p>
+        <div class="donate-label">
+          <span class="lang-en">{t('en', 'donate.title')}</span>
+          <span class="lang-th">{t('th', 'donate.title')}</span>
+        </div>
+        <h1 class="donate-heading">
+          <span class="lang-en">{t('en', 'donate.subtitle')}</span>
+          <span class="lang-th">{t('th', 'donate.subtitle')}</span>
+        </h1>
+        <p class="donate-desc">
+          <span class="lang-en">{t('en', 'donate.description')}</span>
+          <span class="lang-th">{t('th', 'donate.description')}</span>
+        </p>
 
         <!-- Donation methods (from site.json config) -->
         <div class="donate-methods">
@@ -30,7 +39,8 @@ const tl = (key: string) => t(lang, key);
               <div class="donate-card-inner">
                 <span class="donate-method-name">{method.name}</span>
                 <span class="donate-method-desc">
-                  {lang === 'th' ? method.description.th : method.description.en}
+                  <span class="lang-en">{method.description.en}</span>
+                  <span class="lang-th">{method.description.th}</span>
                 </span>
               </div>
               <span class="donate-arrow">→</span>
@@ -38,15 +48,22 @@ const tl = (key: string) => t(lang, key);
           ))}
         </div>
 
-        <p class="donate-thanks">{tl('donate.thanks')}</p>
+        <p class="donate-thanks">
+          <span class="lang-en">{t('en', 'donate.thanks')}</span>
+          <span class="lang-th">{t('th', 'donate.thanks')}</span>
+        </p>
 
         <div class="donate-divider"></div>
 
         <!-- Feedback -->
         <div class="donate-contact">
-          <p class="donate-contact-text">{tl('donate.suggest')}</p>
+          <p class="donate-contact-text">
+            <span class="lang-en">{t('en', 'donate.suggest')}</span>
+            <span class="lang-th">{t('th', 'donate.suggest')}</span>
+          </p>
           <a href={`mailto:${site.email}`} class="btn btn-ghost">
-            {tl('donate.suggestButton')} →
+            <span class="lang-en">{t('en', 'donate.suggestButton')} →</span>
+            <span class="lang-th">{t('th', 'donate.suggestButton')} →</span>
           </a>
         </div>
       </div>

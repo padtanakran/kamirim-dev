@@ -26,13 +26,19 @@ const sorted = [...filtered].sort((a, b) => {
 });
 ---
 
-<Base lang={lang} title={tl('projects.title')} description={tl('projects.subtitle')}>
+<Base title="Projects">
   <section class="section">
     <div class="container">
       <!-- Page header -->
       <header class="page-header">
-        <h1 class="page-title">{tl('projects.title')}</h1>
-        <p class="page-subtitle">{tl('projects.subtitle')}</p>
+        <h1 class="page-title">
+          <span class="lang-en">{t('en', 'projects.title')}</span>
+          <span class="lang-th">{t('th', 'projects.title')}</span>
+        </h1>
+        <p class="page-subtitle">
+          <span class="lang-en">{t('en', 'projects.subtitle')}</span>
+          <span class="lang-th">{t('th', 'projects.subtitle')}</span>
+        </p>
       </header>
 
       <!-- Category tabs (data-driven from categories.json) -->
@@ -41,9 +47,11 @@ const sorted = [...filtered].sort((a, b) => {
           <a
             href={cat.id === 'all' ? u('/projects') : u(`/projects?cat=${cat.id}`)}
             class:list={['tab-link', { active: activeCat === cat.id }]}
+            data-cat={cat.id}
             aria-current={activeCat === cat.id ? 'page' : undefined}
           >
-            {cat.name[lang]}
+            <span class="lang-en">{cat.name.en}</span>
+            <span class="lang-th">{cat.name.th}</span>
           </a>
         ))}
       </nav>
@@ -62,14 +70,15 @@ const sorted = [...filtered].sort((a, b) => {
               free={project.data.free}
               featured={project.data.featured}
               image={project.data.image}
-              lang={lang}
-              t={tl}
             />
           ))}
         </div>
       ) : (
         <div class="empty-state">
-          <p class="empty-text">{tl('projects.empty')}</p>
+          <p class="empty-text">
+            <span class="lang-en">{t('en', 'projects.empty')}</span>
+            <span class="lang-th">{t('th', 'projects.empty')}</span>
+          </p>
         </div>
       )}
     </div>
