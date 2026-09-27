@@ -1,6 +1,7 @@
 ---
 import { localized } from '../i18n/index';
 import type { Lang } from '../i18n/index';
+import { u } from '../utils/url';
 
 export interface Props {
   slug: string;
@@ -31,7 +32,7 @@ const {
 } = Astro.props;
 ---
 
-<a href={`/projects/${slug}`} class:list={['project-card', { featured }]} aria-label={localized(title, lang)}>
+<a href={u(`/projects/${slug}`)} class:list={['project-card', { featured }]} aria-label={localized(title, lang)}>
   <div class="card-image-wrap">
     {image ? (
       <img src={image} alt={localized(title, lang)} class="card-image" loading="lazy" decoding="async" />

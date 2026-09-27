@@ -5,6 +5,7 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import categories from '../../data/categories.json';
 import { t, getLang } from '../../i18n/index';
 import type { Lang } from '../../i18n/index';
+import { u } from '../../utils/url';
 
 const langParam = Astro.url.searchParams.get('lang');
 const lang: Lang = getLang(langParam);
@@ -38,7 +39,7 @@ const sorted = [...filtered].sort((a, b) => {
       <nav class="category-tabs" aria-label="Project categories" id="category-tabs">
         {categories.categories.map((cat) => (
           <a
-            href={cat.id === 'all' ? '/projects' : `/projects?cat=${cat.id}`}
+            href={cat.id === 'all' ? u('/projects') : u(`/projects?cat=${cat.id}`)}
             class:list={['tab-link', { active: activeCat === cat.id }]}
             aria-current={activeCat === cat.id ? 'page' : undefined}
           >

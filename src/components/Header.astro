@@ -1,6 +1,7 @@
 ---
 import site from '../data/site.json';
 import { t } from '../i18n/index';
+import { u, base } from '../utils/url';
 
 export interface Props {
   lang?: 'en' | 'th';
@@ -10,23 +11,23 @@ const { lang = 'en' } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 function isActive(path: string): boolean {
-  if (path === '/') return currentPath === '/';
-  return currentPath.startsWith(path);
+  if (path === '/') return currentPath === base + '/' || currentPath === base;
+  return currentPath.startsWith(base + path);
 }
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="wordmark" aria-label="Kamirim home">KAMIRIM</a>
+    <a href={u('/')} class="wordmark" aria-label="Kamirim home">KAMIRIM</a>
 
     <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="/projects" class:list={['nav-link', { active: isActive('/projects') }]}>
+      <a href={u('/projects')} class:list={['nav-link', { active: isActive('/projects') }]}>
         {t(lang, 'nav.projects')}
       </a>
-      <a href="/about" class:list={['nav-link', { active: isActive('/about') }]}>
+      <a href={u('/about')} class:list={['nav-link', { active: isActive('/about') }]}>
         {t(lang, 'nav.about')}
       </a>
-      <a href="/donate" class:list={['nav-link', { active: isActive('/donate') }]}>
+      <a href={u('/donate')} class:list={['nav-link', { active: isActive('/donate') }]}>
         {t(lang, 'nav.donate')}
       </a>
     </nav>
@@ -73,13 +74,13 @@ function isActive(path: string): boolean {
 
   <!-- Mobile Navigation -->
   <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
-    <a href="/projects" class:list={['mobile-nav-link', { active: isActive('/projects') }]}>
+    <a href={u('/projects')} class:list={['mobile-nav-link', { active: isActive('/projects') }]}>
       {t(lang, 'nav.projects')}
     </a>
-    <a href="/about" class:list={['mobile-nav-link', { active: isActive('/about') }]}>
+    <a href={u('/about')} class:list={['mobile-nav-link', { active: isActive('/about') }]}>
       {t(lang, 'nav.about')}
     </a>
-    <a href="/donate" class:list={['mobile-nav-link', { active: isActive('/donate') }]}>
+    <a href={u('/donate')} class:list={['mobile-nav-link', { active: isActive('/donate') }]}>
       {t(lang, 'nav.donate')}
     </a>
     <div class="mobile-lang-row">

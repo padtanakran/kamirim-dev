@@ -1,6 +1,7 @@
 ---
 import site from '../data/site.json';
 import { t } from '../i18n/index';
+import { u } from '../utils/url';
 
 export interface Props {
   lang?: 'en' | 'th';
@@ -19,7 +20,7 @@ const year = new Date().getFullYear();
     <div class="footer-right">
       <a href={site.github} target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
       <a href={site.roblox} target="_blank" rel="noopener noreferrer" class="footer-link">Roblox</a>
-      <a href="/donate" class="footer-link">{t(lang, 'nav.donate')}</a>
+      <a href={u('/donate')} class="footer-link">{t(lang, 'nav.donate')}</a>
     </div>
   </div>
   <div class="container footer-bottom">

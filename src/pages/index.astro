@@ -5,6 +5,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import categories from '../data/categories.json';
 import { t, getLang, localized } from '../i18n/index';
 import type { Lang } from '../i18n/index';
+import { u } from '../utils/url';
 
 const langParam = Astro.url.searchParams.get('lang');
 const lang: Lang = getLang(langParam);
@@ -29,8 +30,8 @@ const tl = (key: string) => t(lang, key);
         {lang === 'th' ? 'ทรัพยากรสำหรับนักพัฒนา Roblox — ฟรีสำหรับทุกคน' : 'Free resources for Roblox developers.'}
       </p>
       <div class="hero-actions">
-        <a href="/projects" class="btn btn-primary">{tl('hero.cta')}</a>
-        <a href="/about" class="btn btn-ghost">{tl('hero.ctaSecondary')}</a>
+        <a href={u('/projects')} class="btn btn-primary">{tl('hero.cta')}</a>
+        <a href={u('/about')} class="btn btn-ghost">{tl('hero.ctaSecondary')}</a>
       </div>
     </div>
   </section>
@@ -44,7 +45,7 @@ const tl = (key: string) => t(lang, key);
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">{tl('projects.featured')}</h2>
-          <a href="/projects" class="section-link">
+          <a href={u('/projects')} class="section-link">
             {tl('projects.title')} →
           </a>
         </div>
@@ -77,7 +78,7 @@ const tl = (key: string) => t(lang, key);
       </h2>
       <div class="categories-grid">
         {categories.categories.filter(c => c.id !== 'all').map((cat) => (
-          <a href={`/projects?cat=${cat.id}`} class="category-card">
+          <a href={cat.id === 'all' ? u('/projects') : u(`/projects?cat=${cat.id}`)} class="category-card">
             <span class="cat-name">{cat.name[lang]}</span>
             <span class="cat-arrow">→</span>
           </a>

@@ -5,6 +5,7 @@ import { t, getLang, localized, localizedArray } from '../../i18n/index';
 import type { Lang } from '../../i18n/index';
 import site from '../../data/site.json';
 import categories from '../../data/categories.json';
+import { u } from '../../utils/url';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -38,7 +39,7 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
   <article class="section">
     <div class="container">
       <!-- Back -->
-      <a href="/projects" class="back-link">{tl('projectDetail.back')}</a>
+      <a href={u('/projects')} class="back-link">{tl('projectDetail.back')}</a>
 
       <!-- Header -->
       <header class="project-header">
@@ -134,7 +135,7 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
           <div class="sidebar-card support-card">
             <p class="support-title">{tl('projectDetail.support')}</p>
             <p class="support-text">{tl('projectDetail.supportText')}</p>
-            <a href="/donate" class="btn btn-ghost" style="width: 100%; justify-content: center; margin-top: 12px;">
+            <a href={u('/donate')} class="btn btn-ghost" style="width: 100%; justify-content: center; margin-top: 12px;">
               {lang === 'th' ? 'สนับสนุน →' : 'Support →'}
             </a>
           </div>
