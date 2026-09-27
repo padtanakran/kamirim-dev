@@ -1,17 +1,19 @@
-/**
- * Prepend Astro's BASE_URL to any internal path.
- * Handles both dev (base = '/') and production (base = '/kamirim-dev/').
- *
- * Usage: u('/projects') → '/kamirim-dev/projects'
- */
-const _base = import.meta.env.BASE_URL.replace(/\/$/, ''); // strip trailing slash
+export const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 
+/**
+ * Prepends the base URL to relative/internal paths for GitHub Pages subpath compatibility.
+ */
 export function u(path: string): string {
-  // External URLs — return as-is
-  if (!path || path.startsWith('http') || path.startsWith('//') || path.startsWith('mailto:')) {
+  if (!path) return base ? `${base}/` : '/';
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('mailto:') ||
+    path.startsWith('#') ||
+    path.startsWith('javascript:')
+  ) {
     return path;
   }
-  return `${_base}${path}`;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${cleanPath}`;
 }
-
-export const base = _base;

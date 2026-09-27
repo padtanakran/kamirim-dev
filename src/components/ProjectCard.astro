@@ -35,7 +35,7 @@ const {
 <a href={u(`/projects/${slug}`)} class:list={['project-card', { featured }]} aria-label={localized(title, lang)}>
   <div class="card-image-wrap">
     {image ? (
-      <img src={image} alt={localized(title, lang)} class="card-image" loading="lazy" decoding="async" />
+      <img src={image.startsWith('http') ? image : u(image)} alt={localized(title, lang)} class="card-image" loading="lazy" decoding="async" />
     ) : (
       <div class="card-image-placeholder" aria-hidden="true">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">

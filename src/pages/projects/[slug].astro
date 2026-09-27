@@ -72,7 +72,7 @@ const categoryLabel = categories.categories.find((c) => c.id === data.category)?
           <!-- Preview image -->
           {data.image && (
             <div class="project-image-wrap">
-              <img src={data.image} alt={localized(data.title, lang)} class="project-image" />
+              <img src={data.image.startsWith('http') ? data.image : u(data.image)} alt={localized(data.title, lang)} class="project-image" />
             </div>
           )}
 
