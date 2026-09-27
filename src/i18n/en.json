@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "about": "About",
+    "donate": "Donate"
+  },
+  "hero": {
+    "badge": "Free Resources",
+    "cta": "Browse Projects",
+    "ctaSecondary": "About Me"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Free developer resources, ready to use.",
+    "empty": "No projects in this category yet.",
+    "viewProject": "View →",
+    "featured": "Featured",
+    "free": "Free",
+    "version": "v"
+  },
+  "projectDetail": {
+    "download": "Download",
+    "github": "View on GitHub",
+    "version": "Version",
+    "category": "Category",
+    "status": "Status",
+    "features": "Features",
+    "installation": "Installation",
+    "support": "Support this project",
+    "supportText": "Everything here is free. If this project helped you, consider supporting future development.",
+    "back": "← Back to Projects"
+  },
+  "about": {
+    "title": "About",
+    "intro": "Hi, I'm Kamirim.",
+    "description": "I build free tools and resources for Roblox developers. Everything shared here is open and free to use.",
+    "whatIBuild": "What I build",
+    "items": [
+      "Free Roblox Studio plugins",
+      "Developer tools and utilities",
+      "Maps, models, and textures",
+      "Open-source projects"
+    ],
+    "contact": "Contact",
+    "contactText": "Have a suggestion or found a bug?",
+    "contactButton": "Send a message",
+    "roblox": "Roblox Profile",
+    "github": "GitHub"
+  },
+  "donate": {
+    "title": "Donate",
+    "subtitle": "Support Kamirim",
+    "description": "Everything here is shared for free. If my plugins or other projects are useful to you, you can support future development.",
+    "thanks": "Thank you for supporting my work.",
+    "suggest": "Have a suggestion?",
+    "suggestButton": "Contact / Suggest"
+  },
+  "footer": {
+    "tagline": "Free resources for Roblox developers.",
+    "rights": "All rights reserved."
+  },
+  "status": {
+    "released": "Released",
+    "beta": "Beta",
+    "wip": "Work in Progress",
+    "archived": "Archived"
+  }
+}

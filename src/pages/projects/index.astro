@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import ProjectCard from '../../components/ProjectCard.astro';
+import categories from '../../data/categories.json';
+import { t, getLang } from '../../i18n/index';
+import type { Lang } from '../../i18n/index';
+
+const langParam = Astro.url.searchParams.get('lang');
+const lang: Lang = getLang(langParam);
+const tl = (key: string) => t(lang, key);
+
+const activeCat = Astro.url.searchParams.get('cat') || 'all';
+
+const allProjects = await getCollection('projects');
+const filtered = activeCat === 'all'
+  ? allProjects
+  : allProjects.filter((p) => p.data.category === activeCat);
+
+// Sort: featured first, then by title
+const sorted = [...filtered].sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return 0;
+});
+---
+
+<Base lang={lang} title={tl('projects.title')} description={tl('projects.subtitle')}>
+  <section class="section">
+    <div class="container">
+      <!-- Page header -->
+      <header class="page-header">
+        <h1 class="page-title">{tl('projects.title')}</h1>
+        <p class="page-subtitle">{tl('projects.subtitle')}</p>
+      </header>
+
+      <!-- Category tabs (data-driven from categories.json) -->
+      <nav class="category-tabs" aria-label="Project categories" id="category-tabs">
+        {categories.categories.map((cat) => (
+          <a
+            href={cat.id === 'all' ? '/projects' : `/projects?cat=${cat.id}`}
+            class:list={['tab-link', { active: activeCat === cat.id }]}
+            aria-current={activeCat === cat.id ? 'page' : undefined}
+          >
+            {cat.name[lang]}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Project Grid -->
+      {sorted.length > 0 ? (
+        <div class="projects-grid" id="projects-grid">
+          {sorted.map((project) => (
+            <ProjectCard
+              slug={project.id}
+              title={project.data.title}
+              description={project.data.description}
+              category={project.data.category}
+              version={project.data.version}
+              status={project.data.status}
+              free={project.data.free}
+              featured={project.data.featured}
+              image={project.data.image}
+              lang={lang}
+              t={tl}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="empty-text">{tl('projects.empty')}</p>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-header {
+    margin-bottom: 48px;
+  }
+
+  .page-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+  }
+
+  /* Category tabs */
+  .category-tabs {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+  }
+
+  .tab-link {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color var(--transition), border-color var(--transition);
+    white-space: nowrap;
+  }
+
+  .tab-link:hover {
+    color: var(--text-secondary);
+  }
+
+  .tab-link.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--text-primary);
+  }
+
+  /* Projects grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .empty-text {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

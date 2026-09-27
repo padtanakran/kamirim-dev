@@ -1,0 +1,319 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { t, getLang, localized, localizedArray } from '../../i18n/index';
+import type { Lang } from '../../i18n/index';
+import site from '../../data/site.json';
+import categories from '../../data/categories.json';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((p) => ({ params: { slug: p.id } }));
+}
+
+const { slug } = Astro.params;
+const langParam = Astro.url.searchParams.get('lang');
+const lang: Lang = getLang(langParam);
+const tl = (key: string) => t(lang, key);
+
+const allProjects = await getCollection('projects');
+const project = allProjects.find((p) => p.id === slug);
+
+if (!project) {
+  return Astro.redirect('/projects');
+}
+
+const { Content } = await render(project);
+const data = project.data;
+
+const categoryLabel = categories.categories.find((c) => c.id === data.category)?.name[lang] || data.category;
+---
+
+<Base
+  lang={lang}
+  title={localized(data.title, lang)}
+  description={localized(data.description, lang)}
+  image={data.image}
+>
+  <article class="section">
+    <div class="container">
+      <!-- Back -->
+      <a href="/projects" class="back-link">{tl('projectDetail.back')}</a>
+
+      <!-- Header -->
+      <header class="project-header">
+        <div class="project-meta-top">
+          <span class="project-category">{categoryLabel}</span>
+          <span class:list={['badge', `badge-${data.status}`]}>{tl(`status.${data.status}`)}</span>
+          {data.free && <span class="badge badge-free">{tl('projects.free')}</span>}
+        </div>
+
+        <h1 class="project-title">{localized(data.title, lang)}</h1>
+        <p class="project-desc">{localized(data.description, lang)}</p>
+
+        <div class="project-actions">
+          {data.download && (
+            <a href={data.download} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              {tl('projectDetail.download')}
+            </a>
+          )}
+          {data.github && (
+            <a href={data.github} target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
+              {tl('projectDetail.github')}
+            </a>
+          )}
+        </div>
+      </header>
+
+      <div class="project-layout">
+        <!-- Main content -->
+        <div class="project-main">
+          <!-- Preview image -->
+          {data.image && (
+            <div class="project-image-wrap">
+              <img src={data.image} alt={localized(data.title, lang)} class="project-image" />
+            </div>
+          )}
+
+          <!-- Features -->
+          {data.features && (
+            <section class="content-section">
+              <h2 class="content-section-title">{tl('projectDetail.features')}</h2>
+              <ul class="features-list">
+                {localizedArray(data.features, lang).map((feature) => (
+                  <li class="feature-item">
+                    <span class="feature-dot"></span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <!-- Installation -->
+          {data.installation && (
+            <section class="content-section">
+              <h2 class="content-section-title">{tl('projectDetail.installation')}</h2>
+              <div class="prose">
+                {localized(data.installation, lang).split('\n').filter((l: string) => l.trim()).map((line: string) => {
+                  const match = line.match(/^(\d+)\.\s+(.+)/);
+                  if (match) return <p>{match[1]}. {match[2].replace(/\*\*(.*?)\*\*/g, '$1')}</p>;
+                  return <p>{line}</p>;
+                })}
+              </div>
+            </section>
+          )}
+
+          <!-- Markdown body -->
+          <section class="content-section">
+            <div class="prose">
+              <Content />
+            </div>
+          </section>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="project-sidebar">
+          <!-- Info -->
+          <div class="sidebar-card">
+            <div class="sidebar-row">
+              <span class="sidebar-label">{tl('projectDetail.version')}</span>
+              <span class="sidebar-value mono">{tl('projects.version')}{data.version}</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-label">{tl('projectDetail.category')}</span>
+              <span class="sidebar-value">{categoryLabel}</span>
+            </div>
+            <div class="sidebar-row">
+              <span class="sidebar-label">{tl('projectDetail.status')}</span>
+              <span class:list={['badge', `badge-${data.status}`]}>{tl(`status.${data.status}`)}</span>
+            </div>
+          </div>
+
+          <!-- Support -->
+          <div class="sidebar-card support-card">
+            <p class="support-title">{tl('projectDetail.support')}</p>
+            <p class="support-text">{tl('projectDetail.supportText')}</p>
+            <a href="/donate" class="btn btn-ghost" style="width: 100%; justify-content: center; margin-top: 12px;">
+              {lang === 'th' ? 'สนับสนุน →' : 'Support →'}
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .back-link {
+    display: inline-block;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    transition: color var(--transition);
+  }
+  .back-link:hover { color: var(--text-secondary); }
+
+  .project-header {
+    max-width: 640px;
+    margin-bottom: 56px;
+  }
+
+  .project-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .project-category {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .project-title {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .project-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .project-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .project-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .project-image-wrap {
+    margin-bottom: 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .project-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  .content-section {
+    margin-bottom: 40px;
+  }
+
+  .content-section-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .feature-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  .project-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: calc(var(--header-height) + 24px);
+  }
+
+  .sidebar-card {
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+  }
+
+  .sidebar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 10px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .sidebar-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .sidebar-row:first-child { padding-top: 0; }
+
+  .sidebar-label {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .sidebar-value {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
+  .sidebar-value.mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .support-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .support-text {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .project-layout {
+      grid-template-columns: 1fr;
+    }
+    .project-sidebar { position: static; }
+  }
+</style>

@@ -1,0 +1,53 @@
+{
+  "categories": [
+    {
+      "id": "all",
+      "name": {
+        "en": "All",
+        "th": "ทั้งหมด"
+      }
+    },
+    {
+      "id": "plugins",
+      "name": {
+        "en": "Plugins",
+        "th": "ปลั๊กอิน"
+      }
+    },
+    {
+      "id": "maps",
+      "name": {
+        "en": "Maps",
+        "th": "แมพ"
+      }
+    },
+    {
+      "id": "models",
+      "name": {
+        "en": "Models",
+        "th": "โมเดล"
+      }
+    },
+    {
+      "id": "textures",
+      "name": {
+        "en": "Textures",
+        "th": "เท็กซ์เจอร์"
+      }
+    },
+    {
+      "id": "tools",
+      "name": {
+        "en": "Tools",
+        "th": "เครื่องมือ"
+      }
+    },
+    {
+      "id": "other",
+      "name": {
+        "en": "Other",
+        "th": "อื่นๆ"
+      }
+    }
+  ]
+}

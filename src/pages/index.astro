@@ -1,0 +1,218 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import ProjectCard from '../components/ProjectCard.astro';
+import categories from '../data/categories.json';
+import { t, getLang, localized } from '../i18n/index';
+import type { Lang } from '../i18n/index';
+
+const langParam = Astro.url.searchParams.get('lang');
+const lang: Lang = getLang(langParam);
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter((p) => p.data.featured)
+  .slice(0, 3);
+
+const tl = (key: string) => t(lang, key);
+---
+
+<Base lang={lang} title={undefined}>
+  <!-- Hero -->
+  <section class="hero section">
+    <div class="container hero-inner">
+      <div class="hero-badge">{tl('hero.badge')}</div>
+      <h1 class="hero-heading">
+        KAMIRIM<span class="hero-dot">.</span>
+      </h1>
+      <p class="hero-sub">
+        {lang === 'th' ? 'ทรัพยากรสำหรับนักพัฒนา Roblox — ฟรีสำหรับทุกคน' : 'Free resources for Roblox developers.'}
+      </p>
+      <div class="hero-actions">
+        <a href="/projects" class="btn btn-primary">{tl('hero.cta')}</a>
+        <a href="/about" class="btn btn-ghost">{tl('hero.ctaSecondary')}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider line -->
+  <div class="container"><div class="divider"></div></div>
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">{tl('projects.featured')}</h2>
+          <a href="/projects" class="section-link">
+            {tl('projects.title')} →
+          </a>
+        </div>
+        <div class="projects-grid">
+          {featuredProjects.map((project) => (
+            <ProjectCard
+              slug={project.id}
+              title={project.data.title}
+              description={project.data.description}
+              category={project.data.category}
+              version={project.data.version}
+              status={project.data.status}
+              free={project.data.free}
+              featured={project.data.featured}
+              image={project.data.image}
+              lang={lang}
+              t={tl}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Categories overview -->
+  <section class="section categories-section">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 32px;">
+        {lang === 'th' ? 'หมวดหมู่' : 'Categories'}
+      </h2>
+      <div class="categories-grid">
+        {categories.categories.filter(c => c.id !== 'all').map((cat) => (
+          <a href={`/projects?cat=${cat.id}`} class="category-card">
+            <span class="cat-name">{cat.name[lang]}</span>
+            <span class="cat-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero-inner {
+    padding-block: 80px;
+    max-width: 640px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 4px 12px;
+    margin-bottom: 28px;
+  }
+
+  .hero-heading {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .hero-dot {
+    color: var(--text-muted);
+  }
+
+  .hero-sub {
+    font-size: 1.0625rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 36px;
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Section common */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .section-link {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+  }
+
+  .section-link:hover {
+    color: var(--text-secondary);
+  }
+
+  /* Projects grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  /* Categories grid */
+  .categories-section {
+    border-top: 1px solid var(--border);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .category-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition), background var(--transition);
+  }
+
+  .category-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-2);
+  }
+
+  .cat-name {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .cat-arrow {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+  }
+
+  .category-card:hover .cat-arrow {
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 480px) {
+    .hero-inner { padding-block: 48px; }
+    .hero-heading { font-size: 3rem; }
+  }
+</style>

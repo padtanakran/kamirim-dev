@@ -1,0 +1,36 @@
+{
+  "name": "Kamirim",
+  "handle": "kamirim",
+  "tagline": {
+    "en": "Free developer resources for everyone.",
+    "th": "ทรัพยากรสำหรับนักพัฒนา ฟรีสำหรับทุกคน"
+  },
+  "description": {
+    "en": "A personal hub for free Roblox developer resources — plugins, maps, models, and more.",
+    "th": "พื้นที่รวมทรัพยากรสำหรับนักพัฒนา Roblox ฟรี — ปลั๊กอิน แมพ โมเดล และอื่นๆ"
+  },
+  "github": "https://github.com/padtanakran",
+  "roblox": "https://www.roblox.com/users/5027612595/profile",
+  "email": "contact@kamirim.dev",
+  "defaultLang": "en",
+  "donations": [
+    {
+      "id": "kofi",
+      "name": "Ko-fi",
+      "url": "#",
+      "description": {
+        "en": "Support on Ko-fi",
+        "th": "สนับสนุนผ่าน Ko-fi"
+      }
+    },
+    {
+      "id": "buymeacoffee",
+      "name": "Buy Me a Coffee",
+      "url": "#",
+      "description": {
+        "en": "Buy me a coffee",
+        "th": "ซื้อกาแฟให้ผม"
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+---
+import site from '../data/site.json';
+import { t } from '../i18n/index';
+
+export interface Props {
+  lang?: 'en' | 'th';
+}
+
+const { lang = 'en' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <span class="footer-wordmark">KAMIRIM</span>
+      <p class="footer-tagline">{t(lang, 'footer.tagline')}</p>
+    </div>
+    <div class="footer-right">
+      <a href={site.github} target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+      <a href={site.roblox} target="_blank" rel="noopener noreferrer" class="footer-link">Roblox</a>
+      <a href="/donate" class="footer-link">{t(lang, 'nav.donate')}</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span class="footer-copy">© {year} {site.name}. {t(lang, 'footer.rights')}</span>
+    <a href={`mailto:${site.email}`} class="footer-contact">{t(lang, 'donate.suggestButton')}</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-top: 40px;
+    padding-bottom: 24px;
+    gap: 32px;
+  }
+
+  .footer-wordmark {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+  }
+
+  .footer-tagline {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .footer-right {
+    display: flex;
+    gap: 20px;
+    flex-shrink: 0;
+  }
+
+  .footer-link {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+  }
+
+  .footer-link:hover {
+    color: var(--text-secondary);
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .footer-contact {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+    transition: color var(--transition), border-color var(--transition);
+  }
+
+  .footer-contact:hover {
+    color: var(--text-secondary);
+    border-color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      gap: 24px;
+    }
+    .footer-right {
+      flex-wrap: wrap;
+    }
+  }
+</style>

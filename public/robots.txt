@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://padtanakran.github.io/kamirim-dev/sitemap-index.xml

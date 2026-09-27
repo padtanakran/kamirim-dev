@@ -1,0 +1,299 @@
+---
+import site from '../data/site.json';
+import { t } from '../i18n/index';
+
+export interface Props {
+  lang?: 'en' | 'th';
+}
+
+const { lang = 'en' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+function isActive(path: string): boolean {
+  if (path === '/') return currentPath === '/';
+  return currentPath.startsWith(path);
+}
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="wordmark" aria-label="Kamirim home">KAMIRIM</a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="/projects" class:list={['nav-link', { active: isActive('/projects') }]}>
+        {t(lang, 'nav.projects')}
+      </a>
+      <a href="/about" class:list={['nav-link', { active: isActive('/about') }]}>
+        {t(lang, 'nav.about')}
+      </a>
+      <a href="/donate" class:list={['nav-link', { active: isActive('/donate') }]}>
+        {t(lang, 'nav.donate')}
+      </a>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Language Switcher -->
+      <div class="lang-switcher" id="lang-switcher" aria-label="Language switcher">
+        <button
+          class:list={['lang-btn', { 'lang-active': lang === 'th' }]}
+          data-lang="th"
+          aria-pressed={lang === 'th'}
+        >TH</button>
+        <span class="lang-sep">/</span>
+        <button
+          class:list={['lang-btn', { 'lang-active': lang === 'en' }]}
+          data-lang="en"
+          aria-pressed={lang === 'en'}
+        >EN</button>
+      </div>
+
+      <!-- GitHub -->
+      <a
+        href={site.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="github-link"
+        aria-label="GitHub"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+      </a>
+
+      <!-- Mobile menu button -->
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <line x1="3" y1="7" x2="21" y2="7"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="17" x2="21" y2="17"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" aria-hidden="true">
+    <a href="/projects" class:list={['mobile-nav-link', { active: isActive('/projects') }]}>
+      {t(lang, 'nav.projects')}
+    </a>
+    <a href="/about" class:list={['mobile-nav-link', { active: isActive('/about') }]}>
+      {t(lang, 'nav.about')}
+    </a>
+    <a href="/donate" class:list={['mobile-nav-link', { active: isActive('/donate') }]}>
+      {t(lang, 'nav.donate')}
+    </a>
+    <div class="mobile-lang-row">
+      <button class:list={['lang-btn', { 'lang-active': lang === 'th' }]} data-lang="th">TH</button>
+      <span class="lang-sep">/</span>
+      <button class:list={['lang-btn', { 'lang-active': lang === 'en' }]} data-lang="en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    height: var(--header-height);
+    gap: 32px;
+  }
+
+  .wordmark {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    flex-shrink: 0;
+    transition: color var(--transition);
+  }
+
+  .wordmark:hover {
+    color: var(--text-secondary);
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .nav-link {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--text-primary);
+  }
+
+  .nav-link.active {
+    background: var(--bg-2);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .lang-btn {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 4px 6px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition);
+  }
+
+  .lang-btn:hover,
+  .lang-btn.lang-active {
+    color: var(--text-primary);
+  }
+
+  .lang-sep {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+    user-select: none;
+  }
+
+  .github-link {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+    padding: 4px;
+  }
+
+  .github-link:hover {
+    color: var(--text-primary);
+  }
+
+  .menu-btn {
+    display: none;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition);
+  }
+
+  .menu-btn:hover {
+    color: var(--text-primary);
+  }
+
+  /* Mobile Nav */
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    padding: 12px 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.25s ease;
+  }
+
+  .mobile-nav.open {
+    max-height: 300px;
+  }
+
+  .mobile-nav-link {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    padding: 10px 24px;
+    transition: color var(--transition);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: var(--text-primary);
+  }
+
+  .mobile-lang-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .desktop-nav {
+      display: none;
+    }
+    .menu-btn {
+      display: flex;
+    }
+    .mobile-nav {
+      display: flex;
+    }
+    .lang-switcher {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = mobileNav?.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileNav?.setAttribute('aria-hidden', String(!isOpen));
+  });
+
+  // Language switcher
+  function switchLang(lang: string) {
+    localStorage.setItem('kamirim-lang', lang);
+    // Reload page — Astro will serve correct lang via cookie or redirect
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+    // Simple: just store and reload. Server picks it up next request.
+    window.location.href = window.location.pathname + '?lang=' + lang;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-lang]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      if (lang) switchLang(lang);
+    });
+  });
+
+  // On load — if lang param in URL, store in localStorage and clean URL
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const langParam = params.get('lang');
+    if (langParam === 'en' || langParam === 'th') {
+      localStorage.setItem('kamirim-lang', langParam);
+      params.delete('lang');
+      const cleanUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+      window.history.replaceState({}, '', cleanUrl);
+    }
+  })();
+</script>

@@ -1,0 +1,162 @@
+---
+import Base from '../layouts/Base.astro';
+import { t, getLang } from '../i18n/index';
+import type { Lang } from '../i18n/index';
+import site from '../data/site.json';
+
+const langParam = Astro.url.searchParams.get('lang');
+const lang: Lang = getLang(langParam);
+const tl = (key: string) => t(lang, key);
+---
+
+<Base lang={lang} title={tl('donate.title')}>
+  <section class="section">
+    <div class="container donate-layout">
+      <div class="donate-main">
+        <div class="donate-label">{tl('donate.title')}</div>
+        <h1 class="donate-heading">{tl('donate.subtitle')}</h1>
+        <p class="donate-desc">{tl('donate.description')}</p>
+
+        <!-- Donation methods (from site.json config) -->
+        <div class="donate-methods">
+          {site.donations.map((method) => (
+            <a
+              href={method.url}
+              target={method.url !== '#' ? '_blank' : undefined}
+              rel="noopener noreferrer"
+              class="donate-card"
+              aria-label={method.name}
+            >
+              <div class="donate-card-inner">
+                <span class="donate-method-name">{method.name}</span>
+                <span class="donate-method-desc">
+                  {lang === 'th' ? method.description.th : method.description.en}
+                </span>
+              </div>
+              <span class="donate-arrow">→</span>
+            </a>
+          ))}
+        </div>
+
+        <p class="donate-thanks">{tl('donate.thanks')}</p>
+
+        <div class="donate-divider"></div>
+
+        <!-- Feedback -->
+        <div class="donate-contact">
+          <p class="donate-contact-text">{tl('donate.suggest')}</p>
+          <a href={`mailto:${site.email}`} class="btn btn-ghost">
+            {tl('donate.suggestButton')} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .donate-layout {
+    max-width: 560px;
+  }
+
+  .donate-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .donate-heading {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+  }
+
+  .donate-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .donate-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .donate-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition), background var(--transition);
+  }
+
+  .donate-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-2);
+  }
+
+  .donate-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .donate-method-name {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .donate-method-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+
+  .donate-arrow {
+    font-size: 1rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+    flex-shrink: 0;
+  }
+
+  .donate-card:hover .donate-arrow {
+    color: var(--text-secondary);
+  }
+
+  .donate-thanks {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-style: italic;
+  }
+
+  .donate-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 40px;
+  }
+
+  .donate-contact {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .donate-contact-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+</style>
