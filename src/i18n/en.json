@@ -27,16 +27,16 @@
     "features": "Features",
     "installation": "Installation",
     "support": "Support this project",
-    "supportText": "Everything here is free. If this project helped you, consider supporting future development.",
+    "supportText": "If this project helped you, consider supporting future development.",
     "back": "← Back to Projects"
   },
   "about": {
     "title": "About",
     "intro": "Hi, I'm Kamirim.",
-    "description": "I build free tools and resources for Roblox developers. Everything shared here is open and free to use.",
+    "description": "I build tools and resources for Roblox developers. Everything shared here is open and free to use.",
     "whatIBuild": "What I build",
     "items": [
-      "Free Roblox Studio plugins",
+      "Roblox Studio plugins",
       "Developer tools and utilities",
       "Maps, models, and textures",
       "Open-source projects"
@@ -50,7 +50,7 @@
   "donate": {
     "title": "Donate",
     "subtitle": "Support Kamirim",
-    "description": "Everything here is shared for free. If my plugins or other projects are useful to you, you can support future development.",
+    "description": "If my plugins or other projects are useful to you, consider supporting future development.",
     "thanks": "Thank you for supporting my work.",
     "suggest": "Have a suggestion?",
     "suggestButton": "Contact / Suggest"

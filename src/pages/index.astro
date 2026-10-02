@@ -229,7 +229,14 @@ const tl = (key: string) => t(lang, key);
   }
 
   @media (max-width: 480px) {
-    .hero-inner { padding-block: 48px; }
+    .hero-inner {
+      padding-block: 48px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     .hero-heading { font-size: 3rem; }
+    .hero-actions { justify-content: center; }
   }
 </style>
