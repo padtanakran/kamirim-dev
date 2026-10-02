@@ -10,7 +10,7 @@ const tl = (key: string) => t(lang, key);
 
 const items = lang === 'th'
   ? ['ปลั๊กอิน Roblox Studio ฟรี', 'เครื่องมือสำหรับนักพัฒนา', 'แมพ โมเดล และเท็กซ์เจอร์', 'โปรเจกต์โอเพนซอร์ส']
-  : ['Free Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'];
+  : ['Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'];
 ---
 
 <Base title="About">
@@ -37,7 +37,7 @@ const items = lang === 'th'
             <span class="lang-th">{t('th', 'about.whatIBuild')}</span>
           </h2>
           <ul class="build-list lang-en">
-            {['Free Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'].map((item) => (
+            {['Roblox Studio plugins', 'Developer tools and utilities', 'Maps, models, and textures', 'Open-source projects'].map((item) => (
               <li class="build-item">
                 <span class="build-dot"></span>
                 {item}
@@ -280,10 +280,11 @@ const items = lang === 'th'
     }
     .about-sidebar {
       position: static;
-      flex-direction: row;
+      flex-direction: column;
       flex-wrap: wrap;
     }
     .about-card, .about-links-card {
+      width: 100%;
       flex: 1;
       min-width: 200px;
     }
